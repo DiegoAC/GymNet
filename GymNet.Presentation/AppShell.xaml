@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell x:Class="GymNet.Presentation.AppShell"
+       xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:views="clr-namespace:GymNet.Presentation.Views"
+       Shell.FlyoutBehavior="Disabled">
+
+    <!-- Ruta de login (pantalla inicial, sin barra arriba) -->
+    <ShellContent Route="login"
+                  Shell.NavBarIsVisible="False"
+                  ContentTemplate="{DataTemplate views:LoginPage}" />
+
+    <!-- Zona autenticada -->
+    <TabBar Route="home">
+
+        <ShellContent Title="Feed"
+                      Route="feed"
+                      ContentTemplate="{DataTemplate views:FeedPage}" />
+
+        <ShellContent Title="Entreno"
+                      Route="workout"
+                      ContentTemplate="{DataTemplate views:TodayWorkoutPage}" />
+
+        <ShellContent Title="Nuevo post"
+                      Route="composer"
+                      ContentTemplate="{DataTemplate views:PostComposerPage}" />
+
+        <ShellContent Title="Perfil"
+                      Route="profile"
+                      ContentTemplate="{DataTemplate views:ProfilePage}" />
+
+    </TabBar>
+
+    <!-- Detalle de post (página apilable, sin TabBar) -->
+    <ShellContent Route="postDetail"
+                  Shell.TabBarIsVisible="False"
+                  Shell.NavBarIsVisible="True"
+                  ContentTemplate="{DataTemplate views:PostDetailPage}" />
+
+</Shell>

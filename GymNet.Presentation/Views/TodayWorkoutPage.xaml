@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GymNet.Presentation.Views.TodayWorkoutPage"
+             BackgroundColor="{StaticResource ColorBackground}">
+
+	<Grid>
+		<!-- Fondo -->
+		<Grid.Background>
+			<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+				<GradientStop Color="#020617" Offset="0.0" />
+				<GradientStop Color="#0B1120" Offset="0.45" />
+				<GradientStop Color="#020617" Offset="1.0" />
+			</LinearGradientBrush>
+		</Grid.Background>
+
+		<ScrollView>
+			<VerticalStackLayout Padding="{OnIdiom Phone='16,24,16,16', Tablet='24,32,24,24'}"
+                                 Spacing="18"
+                                 HorizontalOptions="Center"
+                                 MaximumWidthRequest="{OnIdiom Phone=420, Tablet=600}">
+
+				<!-- Header -->
+				<VerticalStackLayout Spacing="2">
+					<Label Text="Entreno de hoy"
+                           FontSize="{OnIdiom Phone=22, Tablet=24}"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource ColorTextPrimary}" />
+					<Label Text="Registra lo que has hecho en el gimnasio."
+                           FontSize="13"
+                           TextColor="{StaticResource ColorTextMuted}" />
+				</VerticalStackLayout>
+
+				<!-- Tarjeta principal -->
+				<Border BackgroundColor="{StaticResource ColorBackgroundCard}"
+                        Padding="{OnIdiom Phone='16,16,16,16',
+                                         Tablet='22,22,22,22'}">
+					<Border.StrokeShape>
+						<RoundRectangle CornerRadius="{OnIdiom Phone=20, Tablet=24}" />
+					</Border.StrokeShape>
+					<Border.Shadow>
+						<Shadow Brush="#000000"
+                                Radius="18"
+                                Opacity="0.3"
+                                Offset="0,6" />
+					</Border.Shadow>
+
+					<VerticalStackLayout Spacing="14">
+
+						<!-- Fecha -->
+						<VerticalStackLayout Spacing="4">
+							<Label Text="Fecha"
+                                   FontSize="12"
+                                   TextColor="{StaticResource ColorTextMuted}" />
+							<DatePicker Date="{Binding Date}" />
+						</VerticalStackLayout>
+
+						<!-- Tipo de sesión -->
+						<VerticalStackLayout Spacing="4">
+							<Label Text="Tipo de sesión"
+                                   FontSize="12"
+                                   TextColor="{StaticResource ColorTextMuted}" />
+
+							<!-- Chips interactivos -->
+							<CollectionView ItemsSource="{Binding PresetSessionTypes}"
+                                            SelectionMode="Single"
+                                            SelectedItem="{Binding SelectedPresetType}"
+                                            Margin="0,0,0,4">
+								<CollectionView.ItemsLayout>
+									<GridItemsLayout Orientation="Horizontal"
+                                                     Span="3" />
+								</CollectionView.ItemsLayout>
+
+								<CollectionView.ItemTemplate>
+									<DataTemplate>
+										<Border Margin="2"
+                                                Padding="10,6"
+                                                StrokeThickness="0">
+											<Border.StrokeShape>
+												<RoundRectangle CornerRadius="16" />
+											</Border.StrokeShape>
+											<Border.Background>
+												<MultiBinding Converter="{StaticResource NullToBoolConverter}">
+													<!-- Truco: el converter aquí no lo usaremos; dejamos color fijo por ahora -->
+												</MultiBinding>
+											</Border.Background>
+											<Label Text="{Binding .}"
+                                                   FontSize="11"
+                                                   TextColor="{StaticResource ColorTextMuted}" />
+										</Border>
+									</DataTemplate>
+								</CollectionView.ItemTemplate>
+							</CollectionView>
+
+							<!-- Entry editable -->
+							<Border BackgroundColor="#020617"
+                                    Padding="10,0"
+                                    StrokeThickness="0">
+								<Border.StrokeShape>
+									<RoundRectangle CornerRadius="22" />
+								</Border.StrokeShape>
+								<Entry Text="{Binding SessionType}"
+                                       Style="{StaticResource GymEntryStyle}"
+                                       Placeholder="Ej. Full body, Pierna pesada…" />
+							</Border>
+						</VerticalStackLayout>
+
+						<!-- Intensidad percibida -->
+						<VerticalStackLayout Spacing="4">
+							<Label Text="Intensidad (RPE 1–10)"
+                                   FontSize="12"
+                                   TextColor="{StaticResource ColorTextMuted}" />
+
+							<Slider Minimum="1"
+                                    Maximum="10"
+                                    Value="{Binding PerceivedIntensity}"
+                                    ThumbColor="{StaticResource ColorPrimary}" />
+
+							<Label Text="{Binding PerceivedIntensity, StringFormat='RPE {0}'}"
+                                   FontSize="12"
+                                   TextColor="{StaticResource ColorTextPrimary}" />
+						</VerticalStackLayout>
+
+						<!-- Notas -->
+						<VerticalStackLayout Spacing="4">
+							<Label Text="Resumen del entreno"
+                                   FontSize="12"
+                                   TextColor="{StaticResource ColorTextMuted}" />
+
+							<Editor Text="{Binding Notes}"
+                                    Placeholder="Series, repeticiones, sensaciones…"
+                                    AutoSize="TextChanges"
+                                    FontSize="14"
+                                    TextColor="{StaticResource ColorTextPrimary}"
+                                    PlaceholderColor="{StaticResource ColorTextMuted}"
+                                    BackgroundColor="Transparent"
+                                    MinimumHeightRequest="120" />
+						</VerticalStackLayout>
+
+						<!-- Compartir en feed -->
+						<HorizontalStackLayout Spacing="8"
+                                               VerticalOptions="Center">
+							<CheckBox IsChecked="{Binding ShareToFeed}"
+                                      Color="{StaticResource ColorPrimary}" />
+							<Label Text="Compartir también en el feed"
+                                   FontSize="12"
+                                   TextColor="{StaticResource ColorTextMuted}"
+                                   VerticalOptions="Center" />
+						</HorizontalStackLayout>
+
+						<!-- Estado / mensaje -->
+						<Label Text="{Binding ResultMessage}"
+                               FontSize="12"
+                               TextColor="{StaticResource ColorTextMuted}"
+                               LineBreakMode="WordWrap"
+                               IsVisible="{Binding ResultMessage, Converter={StaticResource NullToBoolConverter}}" />
+
+					</VerticalStackLayout>
+				</Border>
+
+				<!-- Botón guardar -->
+				<Button Text="Guardar entreno"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Command="{Binding SaveCommand}" />
+
+				<!-- Historial de últimos entrenos -->
+				<VerticalStackLayout Spacing="8"
+                                     Margin="0,8,0,0">
+					<Label Text="Últimos entrenos"
+                           FontSize="15"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource ColorTextPrimary}" />
+
+					<CollectionView ItemsSource="{Binding RecentWorkouts}">
+						<CollectionView.EmptyView>
+							<Label Text="Aún no hay entrenos guardados."
+                                   FontSize="12"
+                                   TextColor="{StaticResource ColorTextMuted}" />
+						</CollectionView.EmptyView>
+
+						<CollectionView.ItemTemplate>
+							<DataTemplate>
+								<Border Margin="0,4,0,4"
+                                        BackgroundColor="{StaticResource ColorBackgroundCard}"
+                                        Padding="10"
+                                        StrokeThickness="0">
+									<Border.StrokeShape>
+										<RoundRectangle CornerRadius="14" />
+									</Border.StrokeShape>
+
+									<Grid ColumnDefinitions="Auto,*"
+                                          RowDefinitions="Auto,Auto">
+										<Label Grid.Row="0"
+                                               Grid.Column="0"
+                                               Text="{Binding Date, StringFormat='{0:dd MMM}'}"
+                                               FontSize="12"
+                                               TextColor="{StaticResource ColorTextMuted}" />
+
+										<Label Grid.Row="0"
+                                               Grid.Column="1"
+                                               Text="{Binding SessionType}"
+                                               FontSize="13"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource ColorTextPrimary}" />
+
+										<Label Grid.Row="1"
+                                               Grid.Column="0"
+                                               Text="{Binding Rpe, StringFormat='RPE {0}'}"
+                                               FontSize="11"
+                                               TextColor="{StaticResource ColorAccent}" />
+
+										<Label Grid.Row="1"
+                                               Grid.Column="1"
+                                               Text="{Binding ShortNotes}"
+                                               FontSize="11"
+                                               TextColor="{StaticResource ColorTextMuted}"
+                                               LineBreakMode="TailTruncation" />
+									</Grid>
+								</Border>
+							</DataTemplate>
+						</CollectionView.ItemTemplate>
+					</CollectionView>
+				</VerticalStackLayout>
+
+			</VerticalStackLayout>
+		</ScrollView>
+	</Grid>
+</ContentPage>

@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GymNet.Presentation.Views.PostDetailPage"
+             BackgroundColor="{StaticResource ColorBackground}">
+
+	<Grid>
+		<Grid.Background>
+			<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+				<GradientStop Color="#020617" Offset="0.0" />
+				<GradientStop Color="#0B1120" Offset="0.45" />
+				<GradientStop Color="#020617" Offset="1.0" />
+			</LinearGradientBrush>
+		</Grid.Background>
+
+		<ScrollView>
+			<VerticalStackLayout Padding="{OnIdiom Phone='16,24,16,16', Tablet='24,32,24,24'}"
+                                 Spacing="18"
+                                 MaximumWidthRequest="{OnIdiom Phone=420, Tablet=600}"
+                                 HorizontalOptions="Center">
+
+				<!-- Header -->
+				<HorizontalStackLayout Spacing="10">
+					<Border WidthRequest="40"
+                            HeightRequest="40"
+                            BackgroundColor="#0F172A"
+                            StrokeThickness="0">
+						<Border.StrokeShape>
+							<RoundRectangle CornerRadius="20" />
+						</Border.StrokeShape>
+						<Label Text="U"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               TextColor="White"
+                               FontAttributes="Bold" />
+					</Border>
+
+					<VerticalStackLayout Spacing="2">
+						<Label Text="{Binding Post.AuthorName}"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource ColorTextPrimary}" />
+						<Label Text="{Binding Post.CreatedAt, StringFormat='{0:dd MMM yyyy HH:mm}'}"
+                               FontSize="12"
+                               TextColor="{StaticResource ColorTextMuted}" />
+					</VerticalStackLayout>
+				</HorizontalStackLayout>
+
+				<!-- Post principal -->
+				<Border BackgroundColor="{StaticResource ColorBackgroundCard}"
+                        Padding="14">
+					<Border.StrokeShape>
+						<RoundRectangle CornerRadius="18" />
+					</Border.StrokeShape>
+					<Border.Shadow>
+						<Shadow Brush="#000000"
+                                Radius="18"
+                                Opacity="0.3"
+                                Offset="0,6" />
+					</Border.Shadow>
+
+					<VerticalStackLayout Spacing="8">
+						<Label Text="{Binding Post.Text}"
+                               FontSize="15"
+                               TextColor="{StaticResource ColorTextPrimary}"
+                               LineBreakMode="WordWrap" />
+
+						<HorizontalStackLayout IsVisible="{Binding Post.IsWorkout}"
+                                               Spacing="8">
+							<Border BackgroundColor="#022c22"
+                                    StrokeThickness="0"
+                                    Padding="6,2">
+								<Border.StrokeShape>
+									<RoundRectangle CornerRadius="999" />
+								</Border.StrokeShape>
+								<Label Text="{Binding Post.WorkoutSessionType}"
+                                       FontSize="11"
+                                       TextColor="{StaticResource ColorPrimary}" />
+							</Border>
+
+							<Label Text="{Binding Post.WorkoutRpe, StringFormat='RPE {0}'}"
+                                   FontSize="11"
+                                   TextColor="{StaticResource ColorAccent}"
+                                   IsVisible="{Binding Post.WorkoutRpe, Converter={StaticResource NullToBoolConverter}}" />
+						</HorizontalStackLayout>
+					</VerticalStackLayout>
+				</Border>
+
+				<!-- Comentarios -->
+				<VerticalStackLayout Spacing="8">
+					<Label Text="Comentarios"
+                           FontSize="15"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource ColorTextPrimary}" />
+
+					<CollectionView ItemsSource="{Binding Comments}">
+						<CollectionView.EmptyView>
+							<Label Text="Sé el primero en comentar."
+                                   FontSize="12"
+                                   TextColor="{StaticResource ColorTextMuted}" />
+						</CollectionView.EmptyView>
+
+						<CollectionView.ItemTemplate>
+							<DataTemplate>
+								<Border Margin="0,4,0,4"
+                                        BackgroundColor="{StaticResource ColorBackgroundCard}"
+                                        Padding="10"
+                                        StrokeThickness="0">
+									<Border.StrokeShape>
+										<RoundRectangle CornerRadius="14" />
+									</Border.StrokeShape>
+
+									<Grid ColumnDefinitions="Auto,*"
+                                          RowDefinitions="Auto,Auto">
+										<Border Grid.RowSpan="2"
+                                                WidthRequest="28"
+                                                HeightRequest="28"
+                                                BackgroundColor="#0F172A"
+                                                StrokeThickness="0">
+											<Border.StrokeShape>
+												<RoundRectangle CornerRadius="14" />
+											</Border.StrokeShape>
+											<Label Text="U"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   TextColor="White"
+                                                   FontSize="12"
+                                                   FontAttributes="Bold" />
+										</Border>
+
+										<Label Grid.Column="1"
+                                               Text="{Binding AuthorName}"
+                                               FontSize="13"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource ColorTextPrimary}" />
+
+										<Label Grid.Column="1"
+                                               Grid.Row="1"
+                                               Text="{Binding CreatedAt, StringFormat='{0:dd MMM HH:mm}'}"
+                                               FontSize="11"
+                                               TextColor="{StaticResource ColorTextMuted}" />
+
+										<Label Grid.RowSpan="2"
+                                               Grid.Column="1"
+                                               Margin="0,20,0,0"
+                                               Text="{Binding Text}"
+                                               FontSize="13"
+                                               TextColor="{StaticResource ColorTextPrimary}"
+                                               LineBreakMode="WordWrap" />
+									</Grid>
+								</Border>
+							</DataTemplate>
+						</CollectionView.ItemTemplate>
+					</CollectionView>
+				</VerticalStackLayout>
+
+				<!-- Añadir comentario -->
+				<VerticalStackLayout Spacing="8">
+					<Label Text="Añadir comentario"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource ColorTextPrimary}" />
+
+					<Editor Text="{Binding NewCommentText}"
+                            Placeholder="Escribe tu comentario..."
+                            AutoSize="TextChanges"
+                            FontSize="13"
+                            TextColor="{StaticResource ColorTextPrimary}"
+                            PlaceholderColor="{StaticResource ColorTextMuted}"
+                            BackgroundColor="{StaticResource ColorBackgroundCard}"
+                            MinimumHeightRequest="80" />
+
+					<Button Text="Publicar comentario"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Command="{Binding AddCommentCommand}" />
+				</VerticalStackLayout>
+
+			</VerticalStackLayout>
+		</ScrollView>
+	</Grid>
+</ContentPage>

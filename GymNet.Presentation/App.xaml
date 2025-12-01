@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:conv="clr-namespace:GymNet.Presentation.Converters"
+             x:Class="GymNet.Presentation.App">
+
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <!-- Colores semánticos con tema claro/oscuro -->
+            <AppThemeBinding x:Key="ColorBackground"
+                             Light="#F9FAFB"
+                             Dark="#050816" />
+
+            <AppThemeBinding x:Key="ColorBackgroundCard"
+                             Light="#FFFFFF"
+                             Dark="#101827" />
+
+            <AppThemeBinding x:Key="ColorTextPrimary"
+                             Light="#020617"
+                             Dark="#F9FAFB" />
+
+            <AppThemeBinding x:Key="ColorTextMuted"
+                             Light="#6B7280"
+                             Dark="#9CA3AF" />
+
+            <AppThemeBinding x:Key="ColorPrimary"
+                             Light="#16A34A"
+                             Dark="#22C55E" />
+
+            <AppThemeBinding x:Key="ColorAccent"
+                             Light="#0EA5E9"
+                             Dark="#38BDF8" />
+
+            <AppThemeBinding x:Key="ColorDanger"
+                             Light="#DC2626"
+                             Dark="#F87171" />
+
+            <!-- Estilos -->
+
+            <Style x:Key="GymEntryStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="{StaticResource ColorTextPrimary}" />
+                <Setter Property="PlaceholderColor" Value="{StaticResource ColorTextMuted}" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="HeightRequest" Value="44" />
+                <Setter Property="Margin" Value="0,4,0,4" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+
+            <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{StaticResource ColorPrimary}" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="CornerRadius" Value="999" />
+                <Setter Property="HeightRequest" Value="46" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Margin" Value="0,8,0,0" />
+            </Style>
+
+            <Style x:Key="TextButtonStyle" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{StaticResource ColorTextMuted}" />
+                <Setter Property="FontSize" Value="13" />
+                <Setter Property="Margin" Value="0,4,0,0" />
+            </Style>
+
+            <!-- Converter -->
+            <conv:NullToBoolConverter x:Key="NullToBoolConverter" />
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
+
+
+

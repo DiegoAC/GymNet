@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GymNet.Presentation.Views.FeedPage"
+             x:Name="FeedPageRoot"
+             BackgroundColor="{StaticResource ColorBackground}">
+
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#020617" Offset="0.0" />
+                <GradientStop Color="#0B1120" Offset="0.45" />
+                <GradientStop Color="#020617" Offset="1.0" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Grid RowDefinitions="Auto,*,Auto"
+              Padding="{OnIdiom Phone='16,16,16,16', Tablet='24,24,24,24'}"
+              x:Name="RootLayout">
+
+            <!-- Header -->
+            <Grid Grid.Row="0"
+                  ColumnDefinitions="Auto,*"
+                  Margin="0,0,0,12">
+                <HorizontalStackLayout Spacing="10">
+                    <Border WidthRequest="36"
+                            HeightRequest="36"
+                            BackgroundColor="#0F172A"
+                            StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="18" />
+                        </Border.StrokeShape>
+                        <Label Text="D"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               TextColor="White"
+                               FontAttributes="Bold" />
+                    </Border>
+
+                    <VerticalStackLayout Spacing="2">
+                        <Label Text="GymNet"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource ColorTextPrimary}" />
+                        <Label Text="Actividad de tu gimnasio"
+                               FontSize="12"
+                               TextColor="{StaticResource ColorTextMuted}" />
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+
+                <Button Grid.Column="1"
+                        Text="Nuevo post"
+                        HorizontalOptions="End"
+                        VerticalOptions="Center"
+                        BackgroundColor="{StaticResource ColorPrimary}"
+                        TextColor="White"
+                        CornerRadius="999"
+                        Padding="16,8"
+                        FontSize="13"
+                        Clicked="OnComposeClicked" />
+            </Grid>
+
+            <!-- Feed -->
+            <RefreshView Grid.Row="1"
+                         Command="{Binding LoadAsyncCommand}"
+                         IsRefreshing="{Binding IsBusy}">
+                <CollectionView ItemsSource="{Binding Posts}"
+                                x:Name="FeedList"
+                                Margin="0,4,0,4">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout Padding="32"
+                                             Spacing="8"
+                                             HorizontalOptions="Center"
+                                             VerticalOptions="Center">
+                            <Label Text="Aún no hay actividad"
+                                   FontSize="16"
+                                   TextColor="{StaticResource ColorTextPrimary}" />
+                            <Label Text="Comparte tu primer entreno desde la pestaña Entreno."
+                                   FontSize="13"
+                                   TextColor="{StaticResource ColorTextMuted}"
+                                   HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,6,0,6"
+                                    BackgroundColor="{StaticResource ColorBackgroundCard}"
+                                    Padding="12">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="18" />
+                                </Border.StrokeShape>
+                                <Border.Shadow>
+                                    <Shadow Brush="#000000"
+                                            Radius="16"
+                                            Opacity="0.25"
+                                            Offset="0,4" />
+                                </Border.Shadow>
+
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={x:Reference FeedPageRoot}, Path=BindingContext.OpenPostCommand}"
+                                                          CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+
+                                <VerticalStackLayout Spacing="8">
+                                    <!-- Header del post -->
+                                    <Grid ColumnDefinitions="Auto,*"
+                                          RowDefinitions="Auto,Auto">
+
+                                        <Border Grid.RowSpan="2"
+                                                WidthRequest="32"
+                                                HeightRequest="32"
+                                                BackgroundColor="#0F172A"
+                                                StrokeThickness="0">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="16" />
+                                            </Border.StrokeShape>
+                                            <Label Text="U"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center"
+                                                   TextColor="White"
+                                                   FontSize="14"
+                                                   FontAttributes="Bold" />
+                                        </Border>
+
+                                        <Label Grid.Column="1"
+                                               Text="{Binding AuthorName}"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource ColorTextPrimary}" />
+
+                                        <Label Grid.Column="1"
+                                               Grid.Row="1"
+                                               Text="{Binding CreatedAt, StringFormat='{0:dd MMM HH:mm}'}"
+                                               FontSize="11"
+                                               TextColor="{StaticResource ColorTextMuted}" />
+                                    </Grid>
+
+                                    <!-- Texto -->
+                                    <Label Text="{Binding Text}"
+                                           FontSize="14"
+                                           TextColor="{StaticResource ColorTextPrimary}"
+                                           LineBreakMode="WordWrap" />
+
+                                    <!-- Badge de entreno -->
+                                    <HorizontalStackLayout IsVisible="{Binding IsWorkout}"
+                                                           Spacing="8">
+                                        <Border BackgroundColor="#022c22"
+                                                StrokeThickness="0"
+                                                Padding="6,2">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="999" />
+                                            </Border.StrokeShape>
+                                            <Label Text="{Binding WorkoutSessionType}"
+                                                   FontSize="11"
+                                                   TextColor="{StaticResource ColorPrimary}" />
+                                        </Border>
+
+                                        <Label Text="{Binding WorkoutRpe, StringFormat='RPE {0}'}"
+                                               FontSize="11"
+                                               TextColor="{StaticResource ColorAccent}"
+                                               IsVisible="{Binding WorkoutRpe, Converter={StaticResource NullToBoolConverter}}" />
+                                    </HorizontalStackLayout>
+
+                                    <!-- Acciones: like -->
+                                    <HorizontalStackLayout Spacing="12">
+                                        <Button Text="{Binding LikesCount, StringFormat='❤ {0}'}"
+                                                FontSize="11"
+                                                Padding="10,4"
+                                                BackgroundColor="Transparent"
+                                                Command="{Binding BindingContext.ToggleLikeCommand, Source={x:Reference FeedPageRoot}}"
+                                                CommandParameter="{Binding .}">
+                                            <Button.Triggers>
+                                                <DataTrigger TargetType="Button"
+                                                             Binding="{Binding IsLiked}"
+                                                             Value="True">
+                                                    <Setter Property="TextColor" Value="{StaticResource ColorDanger}" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Button"
+                                                             Binding="{Binding IsLiked}"
+                                                             Value="False">
+                                                    <Setter Property="TextColor" Value="{StaticResource ColorAccent}" />
+                                                </DataTrigger>
+                                            </Button.Triggers>
+                                        </Button>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
+
+            <!-- Barra inferior -->
+            <Grid Grid.Row="2"
+                  ColumnDefinitions="*,Auto"
+                  Margin="0,8,0,0">
+                <Label Text="Feed general"
+                       FontSize="12"
+                       TextColor="{StaticResource ColorTextMuted}"
+                       VerticalOptions="Center" />
+
+                <Button Grid.Column="1"
+                        Text="Recargar"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource ColorAccent}"
+                        FontSize="12"
+                        Clicked="OnReloadClicked" />
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>
+
+
+
+
+
