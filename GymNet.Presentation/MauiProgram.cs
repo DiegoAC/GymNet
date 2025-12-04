@@ -21,13 +21,16 @@ public static class MauiProgram
 
         builder.Services
             .AddApplication()
-            .AddFirebaseInfra()
+            .AddFirebaseInfra(options =>
+            {
+                options.ApiKey = "BJ_GbD466df-n6clDTW20QDHd7z-U03d3CLMh7feObSgpyt89RcniaPkFBFhx2XsNIQJA0v3QctHMcG_Fgbn-hg";
+                options.ProjectId = "gymnet-social";
+            })
             .AddLocalInfra();
 
-        // Store compartido
+        // Store y ViewModels (como ya teníamos)
         builder.Services.AddSingleton<FakeFeedStore>();
 
-        // ViewModels
         builder.Services.AddSingleton<LoginViewModel>();
         builder.Services.AddSingleton<FeedViewModel>();
         builder.Services.AddSingleton<PostComposerViewModel>();
@@ -38,6 +41,7 @@ public static class MauiProgram
         return builder.Build();
     }
 }
+
 
 
 

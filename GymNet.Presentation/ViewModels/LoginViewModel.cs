@@ -1,42 +1,52 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using GymNet.Application.Abstractions.Services;
+using GymNet.Application.Abstractions.Identity;
+using Microsoft.Maui.Controls;
 
-//Funciona todo perfectamente, así que he silenciado ese aviso para que no moleste.
 #pragma warning disable MVVMTK0045
 
-namespace GymNet.Presentation.ViewModels
+namespace GymNet.Presentation.ViewModels;
+
+public partial class LoginViewModel : ObservableObject
 {
-    public partial class LoginViewModel : ObservableObject
-    {
-        private readonly IAuthService _auth;
+    private readonly IAuthService _authService;
 
     [ObservableProperty] private string email = "";
     [ObservableProperty] private string password = "";
-    [ObservableProperty] private bool isBusy;
     [ObservableProperty] private string? errorMessage;
+    [ObservableProperty] private bool isBusy;
 
     public IAsyncRelayCommand SignInCommand { get; }
     public IAsyncRelayCommand RegisterCommand { get; }
 
-    public LoginViewModel(IAuthService auth)
+    public LoginViewModel(IAuthService authService)
     {
-        _auth = auth;
+        _authService = authService;
 
-        SignInCommand = new AsyncRelayCommand(SignInAsync, () => CanSubmit);
-        RegisterCommand = new AsyncRelayCommand(RegisterAsync, () => CanSubmit);
+        SignInCommand = new AsyncRelayCommand(SignInAsync, CanExecuteAuth);
+        RegisterCommand = new AsyncRelayCommand(RegisterAsync, CanExecuteAuth);
     }
 
-    public bool CanSubmit =>
-        !IsBusy &&
-        !string.IsNullOrWhiteSpace(Email) &&
-        !string.IsNullOrWhiteSpace(Password);
+    private bool CanExecuteAuth()
+        => !IsBusy &&
+           !string.IsNullOrWhiteSpace(Email) &&
+           !string.IsNullOrWhiteSpace(Password);
 
-    partial void OnEmailChanged(string value) => NotifyCommands();
-    partial void OnPasswordChanged(string value) => NotifyCommands();
-    partial void OnIsBusyChanged(bool value) => NotifyCommands();
+    partial void OnEmailChanged(string value)
+    {
+        ErrorMessage = null;
+        SignInCommand.NotifyCanExecuteChanged();
+        RegisterCommand.NotifyCanExecuteChanged();
+    }
 
-    private void NotifyCommands()
+    partial void OnPasswordChanged(string value)
+    {
+        ErrorMessage = null;
+        SignInCommand.NotifyCanExecuteChanged();
+        RegisterCommand.NotifyCanExecuteChanged();
+    }
+
+    partial void OnIsBusyChanged(bool value)
     {
         SignInCommand.NotifyCanExecuteChanged();
         RegisterCommand.NotifyCanExecuteChanged();
@@ -44,52 +54,65 @@ namespace GymNet.Presentation.ViewModels
 
     private async Task SignInAsync()
     {
-        if (IsBusy) return;
-        ErrorMessage = null;
-
-        try
-        {
-            IsBusy = true;
-            var result = await _auth.SignInWithEmailPasswordAsync(
-                Email.Trim(),
-                Password,
-                CancellationToken.None);
-
-            await Shell.Current.GoToAsync("//feed");
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage = ex.Message;
-        }
-        finally
-        {
-            IsBusy = false;
-        }
+        await ExecuteAuthAsync(isRegister: false);
     }
 
     private async Task RegisterAsync()
     {
-        if (IsBusy) return;
+        await ExecuteAuthAsync(isRegister: true);
+    }
+
+    private async Task ExecuteAuthAsync(bool isRegister)
+    {
+        if (!CanExecuteAuth())
+            return;
+
         ErrorMessage = null;
 
         try
         {
             IsBusy = true;
-            var result = await _auth.RegisterWithEmailPasswordAsync(
-                Email.Trim(),
-                Password,
-                CancellationToken.None);
 
-            await Shell.Current.GoToAsync("//feed");
+            var email = Email.Trim();
+            var password = Password.Trim();
+
+            var result = isRegister
+                ? await _authService.RegisterAsync(email, password)
+                : await _authService.SignInAsync(email, password);
+
+            if (result.IsSuccess)
+            {
+                await Shell.Current.GoToAsync("//feed");
+            }
+            else
+            {
+                ErrorMessage = MapFirebaseError(result.Error);
+            }
         }
         catch (Exception ex)
         {
-            ErrorMessage = ex.Message;
+            ErrorMessage = $"Error inesperado: {ex.Message}";
         }
         finally
         {
             IsBusy = false;
         }
     }
+
+    private static string MapFirebaseError(string? error)
+    {
+        if (string.IsNullOrWhiteSpace(error))
+            return "No se ha podido completar la operación.";
+
+        return error switch
+        {
+            "EMAIL_EXISTS" => "Ya existe una cuenta con ese correo.",
+            "OPERATION_NOT_ALLOWED" => "Este método de acceso no está habilitado.",
+            "TOO_MANY_ATTEMPTS_TRY_LATER" => "Demasiados intentos, inténtalo más tarde.",
+            "EMAIL_NOT_FOUND" => "No existe ninguna cuenta con ese correo.",
+            "INVALID_PASSWORD" => "Contraseña incorrecta.",
+            "USER_DISABLED" => "La cuenta ha sido deshabilitada.",
+            _ => "Error de autenticación: " + error
+        };
     }
 }

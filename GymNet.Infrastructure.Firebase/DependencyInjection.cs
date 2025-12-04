@@ -1,23 +1,32 @@
-﻿using GymNet.Application.Abstractions.Persistence;
-using GymNet.Application.Abstractions.Services;
+﻿using System.Net.Http;
+using GymNet.Application.Abstractions.Identity;
 using GymNet.Infrastructure.Firebase.Auth;
-using GymNet.Infrastructure.Firebase.Persistence;
-using GymNet.Infrastructure.Firebase.Storage;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GymNet.Infrastructure.Firebase;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddFirebaseInfra(this IServiceCollection services)
+    public static IServiceCollection AddFirebaseInfra(
+        this IServiceCollection services,
+        Action<FirebaseAuthOptions> configureAuth)
     {
-        services.AddSingleton<IPostsRepository, FirestorePostsRepository>();
-        services.AddSingleton<IBlobStorage, FirebaseBlobStorage>();
+        // Crear opciones y configurarlas con la acción que pasamos desde MauiProgram
+        var options = new FirebaseAuthOptions();
+        configureAuth(options);
 
-        // Login fake (luego lo cambiamos a Firebase real)
-        services.AddSingleton<IAuthService, FakeAuthService>();
+        // Registrar las opciones como singleton
+        services.AddSingleton(options);
+
+        // HttpClient singleton para hablar con Firebase
+        services.AddSingleton<HttpClient>();
+
+        // Servicio de autenticación que usa HttpClient y opciones anteriores
+        services.AddScoped<IAuthService, FirebaseAuthService>();
 
         return services;
     }
 }
+
+
 
