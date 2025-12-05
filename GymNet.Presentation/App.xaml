@@ -66,6 +66,7 @@
 
             <!-- Converter -->
             <conv:NullToBoolConverter x:Key="NullToBoolConverter" />
+            <conv:InvertedBoolConverter x:Key="InvertedBoolConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

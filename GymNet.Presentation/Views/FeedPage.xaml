@@ -1,7 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GymNet.Presentation.ViewModels"
              x:Class="GymNet.Presentation.Views.FeedPage"
+             xmlns:controls="clr-namespace:GymNet.Presentation.Controls"
+             x:DataType="vm:FeedViewModel"
              x:Name="FeedPageRoot"
              BackgroundColor="{StaticResource ColorBackground}">
 
@@ -60,10 +63,61 @@
                         Clicked="OnComposeClicked" />
             </Grid>
 
+            <!-- Skeleton Loading State -->
+            <CollectionView Grid.Row="1" 
+                           IsVisible="{Binding IsBusy}"
+                           Margin="0,4,0,4">
+                <CollectionView.ItemsSource>
+                    <x:Array Type="{x:Type x:Int32}">
+                        <x:Int32>1</x:Int32>
+                        <x:Int32>2</x:Int32>
+                        <x:Int32>3</x:Int32>
+                    </x:Array>
+                </CollectionView.ItemsSource>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,6,0,6"
+                                BackgroundColor="{StaticResource ColorBackgroundCard}"
+                                Padding="12">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="18" />
+                            </Border.StrokeShape>
+                            
+                            <VerticalStackLayout Spacing="8">
+                                <!-- Header skeleton -->
+                                <Grid ColumnDefinitions="32,*" ColumnSpacing="10">
+                                    <controls:SkeletonView 
+                                        WidthRequest="32" 
+                                        HeightRequest="32" />
+                                    
+                                    <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                        <controls:SkeletonView 
+                                            HeightRequest="16" 
+                                            WidthRequest="120" />
+                                        <controls:SkeletonView 
+                                            HeightRequest="12" 
+                                            WidthRequest="80" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                                
+                                <!-- Text skeleton -->
+                                <controls:SkeletonView HeightRequest="60" />
+                                
+                                <!-- Badge skeleton -->
+                                <controls:SkeletonView 
+                                    HeightRequest="20" 
+                                    WidthRequest="100" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
             <!-- Feed -->
             <RefreshView Grid.Row="1"
                          Command="{Binding LoadAsyncCommand}"
-                         IsRefreshing="{Binding IsBusy}">
+                         IsRefreshing="{Binding IsBusy}"
+                         IsVisible="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}">
                 <CollectionView ItemsSource="{Binding Posts}"
                                 x:Name="FeedList"
                                 Margin="0,4,0,4">
@@ -209,8 +263,3 @@
         </Grid>
     </Grid>
 </ContentPage>
-
-
-
-
-

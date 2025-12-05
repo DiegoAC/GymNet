@@ -1,7 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GymNet.Presentation.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="GymNet.Presentation.Views.ProfilePage"
+             x:DataType="vm:ProfileViewModel"
              BackgroundColor="{StaticResource ColorBackground}">
 
 	<Grid>
@@ -58,9 +61,9 @@
 				<Grid ColumnDefinitions="*,*,*"
                       ColumnSpacing="10">
 
-					<Border CornerRadius="14"
-                            BackgroundColor="{StaticResource ColorBackgroundCard}"
-                            StrokeThickness="0"
+					<Border BackgroundColor="{StaticResource ColorBackgroundCard}"
+                            Stroke="{StaticResource ColorPrimary}"
+                            StrokeThickness="1"
                             Padding="10">
 						<Border.StrokeShape>
 							<RoundRectangle CornerRadius="14" />
@@ -80,8 +83,7 @@
 						</VerticalStackLayout>
 					</Border>
 
-					<Border CornerRadius="14"
-                            BackgroundColor="{StaticResource ColorBackgroundCard}"
+					<Border BackgroundColor="{StaticResource ColorBackgroundCard}"
                             StrokeThickness="0"
                             Padding="10">
 						<Border.StrokeShape>
@@ -102,8 +104,7 @@
 						</VerticalStackLayout>
 					</Border>
 
-					<Border CornerRadius="14"
-                            BackgroundColor="{StaticResource ColorBackgroundCard}"
+					<Border BackgroundColor="{StaticResource ColorBackgroundCard}"
                             StrokeThickness="0"
                             Padding="10">
 						<Border.StrokeShape>
@@ -126,8 +127,7 @@
 				<!-- Seguidores -->
 				<Grid ColumnDefinitions="*,*"
                       ColumnSpacing="10">
-					<Border CornerRadius="14"
-                            BackgroundColor="{StaticResource ColorBackgroundCard}"
+					<Border BackgroundColor="{StaticResource ColorBackgroundCard}"
                             StrokeThickness="0"
                             Padding="10">
 						<Border.StrokeShape>
@@ -145,8 +145,7 @@
 						</VerticalStackLayout>
 					</Border>
 
-					<Border CornerRadius="14"
-                            BackgroundColor="{StaticResource ColorBackgroundCard}"
+					<Border BackgroundColor="{StaticResource ColorBackgroundCard}"
                             StrokeThickness="0"
                             Padding="10">
 						<Border.StrokeShape>
@@ -172,8 +171,7 @@
                            FontAttributes="Bold"
                            TextColor="{StaticResource ColorTextPrimary}" />
 
-					<Border CornerRadius="14"
-                            BackgroundColor="{StaticResource ColorBackgroundCard}"
+					<Border BackgroundColor="{StaticResource ColorBackgroundCard}"
                             StrokeThickness="0"
                             Padding="12">
 						<Border.StrokeShape>
@@ -208,18 +206,21 @@
 
 				<!-- Botón de acción futura (placeholder) -->
 				<Button Text="Editar perfil"
-                        Style="{StaticResource PrimaryButtonStyle}" />
+                        Style="{StaticResource PrimaryButtonStyle}">
+					<Button.Behaviors>
+						<toolkit:TouchBehavior PressedScale="0.95" />
+					</Button.Behaviors>
+				</Button>
 
 				<!-- Cerrar sesión -->
 				<Button Text="Cerrar sesión"
+                        Command="{Binding LogoutCommand}"
                         BackgroundColor="Transparent"
                         TextColor="{StaticResource ColorDanger}"
                         FontSize="13"
-                        Margin="0,4,0,0"
-                        Clicked="OnLogoutClicked" />
+                        Margin="0,4,0,0" />
 
 			</VerticalStackLayout>
 		</ScrollView>
 	</Grid>
 </ContentPage>
-

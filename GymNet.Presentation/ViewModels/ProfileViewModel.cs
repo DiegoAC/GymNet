@@ -1,9 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using GymNet.Application.Abstractions.Identity;
+
 #pragma warning disable MVVMTK0045
 namespace GymNet.Presentation.ViewModels;
 
 public partial class ProfileViewModel : ObservableObject
 {
+    private readonly IAuthService _authService;
+
+    public ProfileViewModel(IAuthService authService)
+    {
+        _authService = authService;
+    }
+
     // En el futuro vendrán de Auth + backend
     [ObservableProperty] private string displayName = "Diego";
     [ObservableProperty] private string email = "diego@example.com";
@@ -24,6 +34,20 @@ public partial class ProfileViewModel : ObservableObject
                 .Take(2)
                 .ToArray());
 
+    [RelayCommand]
+    private async Task LogoutAsync()
+    {
+        // Haptic feedback for better UX
+        try
+        {
+            HapticFeedback.Perform(HapticFeedbackType.Click);
+        }
+        catch { /* Haptics not supported on all platforms */ }
+
+        await _authService.SignOutAsync();
+        await Shell.Current.GoToAsync("//login");
+    }
+
     // En el futuro podrías cargar datos del backend aquí
     public Task LoadAsync()
     {
@@ -31,4 +55,3 @@ public partial class ProfileViewModel : ObservableObject
         return Task.CompletedTask;
     }
 }
-

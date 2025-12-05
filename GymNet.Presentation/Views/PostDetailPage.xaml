@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:GymNet.Presentation.ViewModels"
              x:Class="GymNet.Presentation.Views.PostDetailPage"
-             BackgroundColor="{StaticResource ColorBackground}">
+             x:DataType="vm:PostDetailViewModel"
+             BackgroundColor="{StaticResource ColorBackground}"
+             Shell.PresentationMode="ModalAnimated">
 
 	<Grid>
 		<Grid.Background>
