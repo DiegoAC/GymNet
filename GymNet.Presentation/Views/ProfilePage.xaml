@@ -4,222 +4,190 @@
              x:Class="GymNet.Presentation.Views.ProfilePage"
              BackgroundColor="{StaticResource ColorBackground}">
 
-	<Grid>
-		<!-- Fondo -->
-		<Grid.Background>
-			<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-				<GradientStop Color="#020617" Offset="0.0" />
-				<GradientStop Color="#0B1120" Offset="0.45" />
-				<GradientStop Color="#020617" Offset="1.0" />
-			</LinearGradientBrush>
-		</Grid.Background>
+    <Grid>
+        <!-- Fondo -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#020617" Offset="0.0" />
+                <GradientStop Color="#0B1120" Offset="0.45" />
+                <GradientStop Color="#020617" Offset="1.0" />
+            </LinearGradientBrush>
+        </Grid.Background>
 
-		<ScrollView>
-			<VerticalStackLayout Padding="{OnIdiom Phone='16,32,16,16', Tablet='24,40,24,24'}"
+        <ScrollView>
+            <VerticalStackLayout Padding="{OnIdiom Phone='16,32,16,16', Tablet='24,40,24,24'}"
                                  Spacing="20"
                                  HorizontalOptions="Center"
                                  MaximumWidthRequest="{OnIdiom Phone=420, Tablet=640}">
 
-				<!-- Header perfil -->
-				<Grid ColumnDefinitions="Auto,*"
+                <!-- Header perfil -->
+                <Grid ColumnDefinitions="Auto,*"
                       ColumnSpacing="14">
-					<!-- Avatar sin Frame -->
-					<Border WidthRequest="70"
+
+                    <!-- Avatar sin esquinas redondeadas (por ahora) -->
+                    <Border WidthRequest="70"
                             HeightRequest="70"
                             BackgroundColor="#0F172A"
                             StrokeThickness="0">
-						<Border.StrokeShape>
-							<RoundRectangle CornerRadius="35" />
-						</Border.StrokeShape>
-						<Label Text="{Binding Initials}"
+                        <Label Text="{Binding Initials}"
                                HorizontalOptions="Center"
                                VerticalOptions="Center"
                                TextColor="White"
                                FontSize="28"
                                FontAttributes="Bold" />
-					</Border>
+                    </Border>
 
-					<VerticalStackLayout Spacing="2"
+                    <VerticalStackLayout Spacing="2"
                                          VerticalOptions="Center">
-						<Label Text="{Binding DisplayName}"
+                        <Label Text="{Binding DisplayName}"
                                FontSize="20"
                                FontAttributes="Bold"
                                TextColor="{StaticResource ColorTextPrimary}" />
-						<Label Text="{Binding Username}"
+                        <Label Text="{Binding Username}"
                                FontSize="13"
                                TextColor="{StaticResource ColorTextMuted}" />
-						<Label Text="{Binding Email}"
+                        <Label Text="{Binding Email}"
                                FontSize="12"
                                TextColor="{StaticResource ColorTextMuted}" />
-					</VerticalStackLayout>
-				</Grid>
+                    </VerticalStackLayout>
+                </Grid>
 
-				<!-- Stats -->
-				<Grid ColumnDefinitions="*,*,*"
+                <!-- Stats principales -->
+                <Grid ColumnDefinitions="*,*,*"
                       ColumnSpacing="10">
 
-					<Border CornerRadius="14"
-                            BackgroundColor="{StaticResource ColorBackgroundCard}"
+                    <Border BackgroundColor="{StaticResource ColorBackgroundCard}"
                             StrokeThickness="0"
                             Padding="10">
-						<Border.StrokeShape>
-							<RoundRectangle CornerRadius="14" />
-						</Border.StrokeShape>
-						<VerticalStackLayout Spacing="2"
+                        <VerticalStackLayout Spacing="2"
                                              HorizontalOptions="Center">
-							<Label Text="{Binding WorkoutsThisWeek}"
+                            <Label Text="{Binding WorkoutsThisWeek}"
                                    FontSize="18"
                                    FontAttributes="Bold"
                                    TextColor="{StaticResource ColorPrimary}" />
-							<Label Text="Entrenos"
+                            <Label Text="Entrenos"
                                    FontSize="11"
                                    TextColor="{StaticResource ColorTextMuted}" />
-							<Label Text="esta semana"
+                            <Label Text="esta semana"
                                    FontSize="10"
                                    TextColor="{StaticResource ColorTextMuted}" />
-						</VerticalStackLayout>
-					</Border>
+                        </VerticalStackLayout>
+                    </Border>
 
-					<Border CornerRadius="14"
-                            BackgroundColor="{StaticResource ColorBackgroundCard}"
+                    <Border BackgroundColor="{StaticResource ColorBackgroundCard}"
                             StrokeThickness="0"
                             Padding="10">
-						<Border.StrokeShape>
-							<RoundRectangle CornerRadius="14" />
-						</Border.StrokeShape>
-						<VerticalStackLayout Spacing="2"
+                        <VerticalStackLayout Spacing="2"
                                              HorizontalOptions="Center">
-							<Label Text="{Binding StreakDays}"
+                            <Label Text="{Binding StreakDays}"
                                    FontSize="18"
                                    FontAttributes="Bold"
                                    TextColor="{StaticResource ColorAccent}" />
-							<Label Text="Racha"
+                            <Label Text="Racha"
                                    FontSize="11"
                                    TextColor="{StaticResource ColorTextMuted}" />
-							<Label Text="días seguidos"
+                            <Label Text="días seguidos"
                                    FontSize="10"
                                    TextColor="{StaticResource ColorTextMuted}" />
-						</VerticalStackLayout>
-					</Border>
+                        </VerticalStackLayout>
+                    </Border>
 
-					<Border CornerRadius="14"
-                            BackgroundColor="{StaticResource ColorBackgroundCard}"
+                    <Border BackgroundColor="{StaticResource ColorBackgroundCard}"
                             StrokeThickness="0"
                             Padding="10">
-						<Border.StrokeShape>
-							<RoundRectangle CornerRadius="14" />
-						</Border.StrokeShape>
-						<VerticalStackLayout Spacing="2"
+                        <VerticalStackLayout Spacing="2"
                                              HorizontalOptions="Center">
-							<Label Text="{Binding Level}"
+                            <Label Text="{Binding Level}"
                                    FontSize="13"
                                    FontAttributes="Bold"
                                    TextColor="{StaticResource ColorTextPrimary}" />
-							<Label Text="{Binding GymName}"
+                            <Label Text="{Binding GymName}"
                                    FontSize="10"
                                    TextColor="{StaticResource ColorTextMuted}"
                                    HorizontalTextAlignment="Center" />
-						</VerticalStackLayout>
-					</Border>
-				</Grid>
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
 
-				<!-- Seguidores -->
-				<Grid ColumnDefinitions="*,*"
+                <!-- Seguidores -->
+                <Grid ColumnDefinitions="*,*"
                       ColumnSpacing="10">
-					<Border CornerRadius="14"
-                            BackgroundColor="{StaticResource ColorBackgroundCard}"
+
+                    <Border BackgroundColor="{StaticResource ColorBackgroundCard}"
                             StrokeThickness="0"
                             Padding="10">
-						<Border.StrokeShape>
-							<RoundRectangle CornerRadius="14" />
-						</Border.StrokeShape>
-						<VerticalStackLayout Spacing="2"
+                        <VerticalStackLayout Spacing="2"
                                              HorizontalOptions="Center">
-							<Label Text="{Binding Followers}"
+                            <Label Text="{Binding Followers}"
                                    FontSize="18"
                                    FontAttributes="Bold"
                                    TextColor="{StaticResource ColorTextPrimary}" />
-							<Label Text="Seguidores"
+                            <Label Text="Seguidores"
                                    FontSize="11"
                                    TextColor="{StaticResource ColorTextMuted}" />
-						</VerticalStackLayout>
-					</Border>
+                        </VerticalStackLayout>
+                    </Border>
 
-					<Border CornerRadius="14"
-                            BackgroundColor="{StaticResource ColorBackgroundCard}"
+                    <Border BackgroundColor="{StaticResource ColorBackgroundCard}"
                             StrokeThickness="0"
                             Padding="10">
-						<Border.StrokeShape>
-							<RoundRectangle CornerRadius="14" />
-						</Border.StrokeShape>
-						<VerticalStackLayout Spacing="2"
+                        <VerticalStackLayout Spacing="2"
                                              HorizontalOptions="Center">
-							<Label Text="{Binding Following}"
+                            <Label Text="{Binding Following}"
                                    FontSize="18"
                                    FontAttributes="Bold"
                                    TextColor="{StaticResource ColorTextPrimary}" />
-							<Label Text="Siguiendo"
+                            <Label Text="Siguiendo"
                                    FontSize="11"
                                    TextColor="{StaticResource ColorTextMuted}" />
-						</VerticalStackLayout>
-					</Border>
-				</Grid>
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
 
-				<!-- Objetivos / resumen -->
-				<VerticalStackLayout Spacing="8">
-					<Label Text="Objetivos actuales"
+                <!-- Objetivos / resumen -->
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Objetivos actuales"
                            FontSize="15"
                            FontAttributes="Bold"
                            TextColor="{StaticResource ColorTextPrimary}" />
 
-					<Border CornerRadius="14"
-                            BackgroundColor="{StaticResource ColorBackgroundCard}"
+                    <Border BackgroundColor="{StaticResource ColorBackgroundCard}"
                             StrokeThickness="0"
                             Padding="12">
-						<Border.StrokeShape>
-							<RoundRectangle CornerRadius="14" />
-						</Border.StrokeShape>
 
-						<VerticalStackLayout Spacing="6">
-							<HorizontalStackLayout Spacing="8">
-								<Label Text="•"
+                        <VerticalStackLayout Spacing="6">
+                            <HorizontalStackLayout Spacing="8">
+                                <Label Text="•"
                                        TextColor="{StaticResource ColorPrimary}" />
-								<Label Text="Entrenar al menos 4 días por semana."
+                                <Label Text="Entrenar al menos 4 días por semana."
                                        FontSize="13"
                                        TextColor="{StaticResource ColorTextMuted}" />
-							</HorizontalStackLayout>
-							<HorizontalStackLayout Spacing="8">
-								<Label Text="•"
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="8">
+                                <Label Text="•"
                                        TextColor="{StaticResource ColorPrimary}" />
-								<Label Text="Mejorar 10 kg en press banca en 3 meses."
+                                <Label Text="Mejorar 10 kg en press banca en 3 meses."
                                        FontSize="13"
                                        TextColor="{StaticResource ColorTextMuted}" />
-							</HorizontalStackLayout>
-							<HorizontalStackLayout Spacing="8">
-								<Label Text="•"
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="8">
+                                <Label Text="•"
                                        TextColor="{StaticResource ColorPrimary}" />
-								<Label Text="Mantener la racha sin faltar al gym."
+                                <Label Text="Mantener la racha sin faltar al gym."
                                        FontSize="13"
                                        TextColor="{StaticResource ColorTextMuted}" />
-							</HorizontalStackLayout>
-						</VerticalStackLayout>
-					</Border>
-				</VerticalStackLayout>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
 
-				<!-- Botón de acción futura (placeholder) -->
-				<Button Text="Editar perfil"
+                <!-- Botón de acción futura (placeholder) -->
+                <Button Text="Editar perfil"
                         Style="{StaticResource PrimaryButtonStyle}" />
 
-				<!-- Cerrar sesión -->
-				<Button Text="Cerrar sesión"
-                        BackgroundColor="Transparent"
-                        TextColor="{StaticResource ColorDanger}"
-                        FontSize="13"
-                        Margin="0,4,0,0"
-                        Clicked="OnLogoutClicked" />
-
-			</VerticalStackLayout>
-		</ScrollView>
-	</Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>
+
 

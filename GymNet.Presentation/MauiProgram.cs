@@ -1,13 +1,15 @@
 ﻿using GymNet.Application;
 using GymNet.Infrastructure.Firebase;
 using GymNet.Infrastructure.Local;
-using GymNet.Presentation.Services;
 using GymNet.Presentation.ViewModels;
+using GymNet.Presentation.Services;
 
 namespace GymNet.Presentation;
 
 public static class MauiProgram
 {
+    public static IServiceProvider Services { get; private set; } = default!;
+
     public static MauiApp CreateMauiApp()
     {
         var builder = MauiApp.CreateBuilder();
@@ -19,18 +21,20 @@ public static class MauiProgram
                 f.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
+        // Capas de aplicación e infraestructura
         builder.Services
             .AddApplication()
             .AddFirebaseInfra(options =>
             {
-                options.ApiKey = "BJ_GbD466df-n6clDTW20QDHd7z-U03d3CLMh7feObSgpyt89RcniaPkFBFhx2XsNIQJA0v3QctHMcG_Fgbn-hg";
+                options.ApiKey = "AIzaSyBJc4KKyr6SW8InNal7fVduQzIIH1DPOQQ";
                 options.ProjectId = "gymnet-social";
             })
             .AddLocalInfra();
 
-        // Store y ViewModels (como ya teníamos)
+        // Servicios de presentación / stores
         builder.Services.AddSingleton<FakeFeedStore>();
 
+        // ViewModels
         builder.Services.AddSingleton<LoginViewModel>();
         builder.Services.AddSingleton<FeedViewModel>();
         builder.Services.AddSingleton<PostComposerViewModel>();
@@ -38,9 +42,16 @@ public static class MauiProgram
         builder.Services.AddSingleton<TodayWorkoutViewModel>();
         builder.Services.AddTransient<PostDetailViewModel>();
 
-        return builder.Build();
+        var app = builder.Build();
+        Services = app.Services;
+
+        return app;
     }
 }
+
+
+
+
 
 
 

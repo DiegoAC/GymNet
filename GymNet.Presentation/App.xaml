@@ -1,75 +1,59 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:conv="clr-namespace:GymNet.Presentation.Converters"
              x:Class="GymNet.Presentation.App">
 
     <Application.Resources>
         <ResourceDictionary>
 
-            <!-- Colores semánticos con tema claro/oscuro -->
-            <AppThemeBinding x:Key="ColorBackground"
-                             Light="#F9FAFB"
-                             Dark="#050816" />
+            <!-- Colores base -->
+            <Color x:Key="ColorBackground">#020617</Color>
+            <Color x:Key="ColorBackgroundCard">#0B1120</Color>
+            <Color x:Key="ColorPrimary">#22C55E</Color>
+            <Color x:Key="ColorAccent">#38BDF8</Color>
+            <Color x:Key="ColorDanger">#EF4444</Color>
+            <Color x:Key="ColorTextPrimary">#F9FAFB</Color>
+            <Color x:Key="ColorTextMuted">#9CA3AF</Color>
+            <Color x:Key="ColorDivider">#1F2933</Color>
 
-            <AppThemeBinding x:Key="ColorBackgroundCard"
-                             Light="#FFFFFF"
-                             Dark="#101827" />
-
-            <AppThemeBinding x:Key="ColorTextPrimary"
-                             Light="#020617"
-                             Dark="#F9FAFB" />
-
-            <AppThemeBinding x:Key="ColorTextMuted"
-                             Light="#6B7280"
-                             Dark="#9CA3AF" />
-
-            <AppThemeBinding x:Key="ColorPrimary"
-                             Light="#16A34A"
-                             Dark="#22C55E" />
-
-            <AppThemeBinding x:Key="ColorAccent"
-                             Light="#0EA5E9"
-                             Dark="#38BDF8" />
-
-            <AppThemeBinding x:Key="ColorDanger"
-                             Light="#DC2626"
-                             Dark="#F87171" />
-
-            <!-- Estilos -->
-
-            <Style x:Key="GymEntryStyle" TargetType="Entry">
-                <Setter Property="TextColor" Value="{StaticResource ColorTextPrimary}" />
-                <Setter Property="PlaceholderColor" Value="{StaticResource ColorTextMuted}" />
-                <Setter Property="BackgroundColor" Value="Transparent" />
-                <Setter Property="HeightRequest" Value="44" />
-                <Setter Property="Margin" Value="0,4,0,4" />
-                <Setter Property="FontSize" Value="14" />
+            <!-- Estilo global de páginas -->
+            <Style TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="{StaticResource ColorBackground}" />
             </Style>
 
+            <!-- Botón principal -->
             <Style x:Key="PrimaryButtonStyle" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="{StaticResource ColorPrimary}" />
                 <Setter Property="TextColor" Value="White" />
-                <Setter Property="CornerRadius" Value="999" />
-                <Setter Property="HeightRequest" Value="46" />
+                <Setter Property="CornerRadius" Value="24" />
+                <Setter Property="HeightRequest" Value="48" />
                 <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="Margin" Value="0,8,0,0" />
+                <Setter Property="Padding" Value="16,0" />
             </Style>
 
-            <Style x:Key="TextButtonStyle" TargetType="Button">
+            <!-- Botón secundario / outline -->
+            <Style x:Key="OutlinedButtonStyle" TargetType="Button">
                 <Setter Property="BackgroundColor" Value="Transparent" />
-                <Setter Property="TextColor" Value="{StaticResource ColorTextMuted}" />
-                <Setter Property="FontSize" Value="13" />
-                <Setter Property="Margin" Value="0,4,0,0" />
+                <Setter Property="TextColor" Value="{StaticResource ColorPrimary}" />
+                <Setter Property="BorderColor" Value="{StaticResource ColorPrimary}" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="CornerRadius" Value="24" />
+                <Setter Property="HeightRequest" Value="44" />
+                <Setter Property="Padding" Value="12,0" />
             </Style>
 
-            <!-- Converter -->
-            <conv:NullToBoolConverter x:Key="NullToBoolConverter" />
+            <!-- Entradas de texto -->
+            <Style x:Key="EntryStyle" TargetType="Entry">
+                <Setter Property="TextColor" Value="{StaticResource ColorTextPrimary}" />
+                <Setter Property="BackgroundColor" Value="#020617" />
+                <Setter Property="PlaceholderColor" Value="{StaticResource ColorTextMuted}" />
+                <Setter Property="HeightRequest" Value="44" />
+            </Style>
 
         </ResourceDictionary>
     </Application.Resources>
 </Application>
+
 
 
 
